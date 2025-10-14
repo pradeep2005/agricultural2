@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Agricultural Tractor — All Works</title>
+    <style>
+        /* 🌾 tractor.css — Style for Agricultural Tractor Tasks Page */
+
+        /* Reset and base settings */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            background: linear-gradient(to bottom right, #f3faf4, #dff5e1);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Container */
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* Header Section */
+        .site-header {
+            background: #2e8b57;
+            color: #fff;
+            text-align: center;
+            padding: 30px 10px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        .site-header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .site-header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin: 50px 0;
+        }
+
+        .hero-img {
+            width: 450px;
+            max-width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .hero-text {
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .hero-text h2 {
+            color: #2e8b57;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .hero-text p {
+            font-size: 1.05rem;
+            color: #555;
+        }
+
+        /* Grid Section */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+            padding: 15px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 12px;
+        }
+
+        .card h3 {
+            color: #2e8b57;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            color: #555;
+            font-size: 0.95rem;
+        }
+
+        /* Notes Section */
+        .notes {
+            background: #fff;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 60px;
+        }
+
+        .notes h3 {
+            color: #2e8b57;
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+        }
+
+        .notes ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+
+        .notes li {
+            color: #444;
+            margin-bottom: 8px;
+        }
+
+        /* Footer */
+        footer {
+            background: #2e8b57;
+            color: #fff;
+            text-align: center;
+            padding: 15px;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card, .hero, .notes {
+            animation: fadeIn 0.8s ease;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1000px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 700px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-text h2 {
+                font-size: 1.5rem;
+            }
+
+            .site-header h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <h1>🚜 Agricultural Tractor — All Major Farming Operations</h1>
+            <p class="subtitle">
+                Explore how tractors power every stage of modern agriculture — from soil preparation to harvesting.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <img src="{{ url_for('static', filename='image/tractor.jpeg') }}" alt="Tractor in field" class="hero-img">
+            <div class="hero-text">
+                <h2>One Machine, Many Roles</h2>
+            </div>
+        </section>
+
+        <section class="grid">
+            <article class="card">
+                <img src="{{ url_for('static', filename='image/plowing.jpeg') }}" alt="Plowing" />
+                <h3>1️⃣ Plowing</h3>
+                <p>
+                    Plowing is the first step in land preparation. The tractor pulls a mouldboard or disc plough
+                    to invert and loosen the soil, bury crop residues, and improve aeration for new plants.
+                </p>
+            </article>
+
+            <article class="card">
+                <img src="{{ url_for('static', filename='image/Cultivator-vs-Harrow.jpeg') }}" alt="Harrowing" />
+                <h3>2️⃣ Harrowing & Cultivation</h3>
+                <p>
+                    After plowing, harrows or cultivators are used to break clods, level the surface, and refine
+                    the seedbed, ensuring ideal soil texture for seeding or transplanting.
+                </p>
+            </article>
+
+            <article class="card">
+                <img src="{{ url_for('static', filename='image/seeding.jpeg') }}" alt="Seeding" />
+                <h3>3️⃣ Seeding / Planting</h3>
+                <p>
+                    Using seed drills or planters, tractors precisely sow seeds at the correct depth and spacing,
+                    ensuring uniform germination and better crop stands for higher yields.
+                </p>
+            </article>
+
+            <article class="card">
+                <img src="{{ url_for('static', filename='image/Fertilizing.jpeg') }}" alt="Fertilizing" />
+                <h3>4️⃣ Fertilizing</h3>
+                <p>
+                    Mounted or trailed fertilizer spreaders distribute nutrients evenly across the field. 
+                    Proper calibration prevents nutrient loss and supports healthy crop growth.
+                </p>
+            </article>
+
+            <article class="card">
+                <img src="{{ url_for('static', filename='image/Spraying.jpeg') }}" alt="Spraying" />
+                <h3>5️⃣ Spraying Operations</h3>
+                <p>
+                    Tractors with boom sprayers apply pesticides, herbicides, or liquid fertilizers. 
+                    GPS-guided spraying ensures precision, reduces wastage, and improves plant protection.
+                </p>
+            </article>
+
+            <article class="card">
+                <img src="{{ url_for('static', filename='image/harvesting.jpeg') }}" alt="Harvesting" />
+                <h3>6️⃣ Harvesting & Combine Work</h3>
+                <p>
+                    In harvesting season, tractors assist combines or operate attached reapers and trailers 
+                    to collect and transport harvested crops such as wheat, paddy, and maize efficiently.
+                </p>
+            </article>
+
+            <article class="card">
+                <img src="{{ url_for('static', filename='image/Tractor-Trailer.jpeg') }}" alt="Transport" />
+                <h3>7️⃣ Transportation & Hauling</h3>
+                <p>
+                    Equipped with trailers, tractors move crops, fertilizers, and machinery around the farm or to market,
+                    playing a vital role in on-farm logistics and distribution.
+                </p>
+            </article>
+        </section>
+
+        <section class="notes">
+            <h3>Safety & Maintenance Tips</h3>
+            <ul>
+                <li>🛠️ Regularly check engine oil, air filters, tire pressure, and hydraulic fluid levels.</li>
+                <li>⚙️ Always attach implements correctly — ensure proper hitching and PTO alignment.</li>
+                <li>🚫 Avoid overloading trailers or operating on steep slopes without caution.</li>
+                <li>👷 Operators should wear protective gear and keep bystanders away during operation.</li>
+                <li>🌿 Follow local agricultural safety standards and environmental regulations.</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2025 Agricultural Tool Management — Tractor Operations Showcase</p>
+        </div>
+    </footer>
+</body>
+</html>

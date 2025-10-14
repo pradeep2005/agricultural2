@@ -1,0 +1,93 @@
+/* Add these rules to your existing static/css/dashboard.css file */
+
+/* General content area styling for forms/views */
+.main-content {
+    padding: 20px;
+    background-color: var(--light-bg); /* Assuming you have --light-bg defined */
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Form group layout */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: var(--text-color-dark); /* Assuming --text-color-dark defined */
+}
+
+/* Styling for various input types */
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group textarea,
+.form-group select,
+.form-control { /* Add .form-control if your forms use this class in templates */
+    width: calc(100% - 20px); /* Adjust for padding */
+    padding: 10px;
+    border: 1px solid var(--border-color); /* Assuming --border-color defined */
+    border-radius: 4px;
+    background-color: var(--input-bg); /* Assuming --input-bg defined */
+    color: var(--text-color); /* Assuming --text-color defined */
+    font-size: 1rem;
+    box-sizing: border-box; /* Ensures padding/border don't increase total width */
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Submit button styling */
+.form-group input[type="submit"],
+.btn.btn-primary { /* Assuming you use btn btn-primary for submit buttons */
+    background-color: var(--primary-color); /* Assuming --primary-color defined */
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease;
+}
+
+.form-group input[type="submit"]:hover,
+.btn.btn-primary:hover {
+    background-color: var(--primary-hover); /* Assuming --primary-hover defined */
+}
+
+/* Error and Flash Message Styling */
+.error-message {
+    color: #e74c3c; /* Red for errors */
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+.flash-messages {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+.flash-messages li {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+.flash-messages .success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+.flash-messages .error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+.flash-messages .info { /* Added for 'info' flashes */
+    background-color: #cce5ff;
+    color: #004085;
+    border: 1px solid #b8daff;
+}

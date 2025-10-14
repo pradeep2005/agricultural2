@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Report Issue{% endblock %}
+{% block content %}
+    <h2>Report a Tool Issue</h2>
+    <form method="POST">
+        <div>
+            <label for="tool_id">Select Tool:</label>
+            <select id="tool_id" name="tool_id" required>
+                {% for tool in tools %}
+                <option value="{{ tool.id }}">{{ tool.name }} ({{ tool.status }})</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label for="title">Issue Title:</label>
+            <input type="text" id="title" name="title" required>
+        </div>
+        <div>
+            <label for="description">Detailed Description of Issue:</label>
+            <textarea id="description" name="description" rows="6" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-danger">Report Issue</button>
+        <a href="{{ url_for('worker_dashboard') }}" class="btn btn-secondary">Cancel</a>
+    </form>
+{% endblock %}

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Job</title>
+    <!-- Assuming style.css now contains ALL necessary base styles, including body layout -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* General Body and Container Styles - Moved to style.css or define here if not in style.css */
+        /* If 'style.css' does not contain `body`, `main-panel` etc. styles, you might need to add them back here */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            background-color: #f4f7f6; /* Light gray background */
+            display: flex; /* Ensures header and main content flow correctly */
+            flex-direction: column; /* Stacks header above content */
+            min-height: 100vh;
+        }
+
+        /* NEW Header Styles - Now includes branding and nav */
+        .header {
+            background-color: #2c3e50; /* Darker blue-gray, similar to old sidebar */
+            color: #ecf0f1;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between; /* Spreads elements across the header */
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+        }
+
+        .header .branding {
+            display: flex;
+            align-items: center;
+        }
+
+        .header .branding .logo-img {
+            width: 50px; /* Smaller logo for header */
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+            border: 2px solid #3498db;
+        }
+
+        .header .branding .app-title {
+            color: #ecf0f1;
+            font-size: 1.8em; /* Slightly larger for main title */
+            margin: 0;
+        }
+
+        .header .header-nav {
+            display: flex;
+            gap: 25px; /* Space between nav items */
+        }
+
+        .header .header-nav a {
+            color: #ecf0f1;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            font-weight: 500;
+        }
+
+        .header .header-nav a i {
+            margin-right: 8px;
+            font-size: 1em;
+        }
+
+        .header .header-nav a:hover,
+        .header .header-nav a.active {
+            background-color: #34495e; /* Hover/active background */
+            color: #3498db; /* Hover/active text color */
+        }
+
+        .header .user-info {
+            display: flex;
+            align-items: center;
+            color: #ecf0f1; /* White text for user info */
+            font-weight: 500;
+        }
+        .header .user-info span {
+            margin-right: 15px;
+            font-size: 1.1em;
+        }
+        /* No profile pic example here, but you could add it */
+
+
+        /* Main Panel should now just be the content area below the header */
+        .main-panel {
+            flex-grow: 1; /* Takes up remaining vertical space */
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            padding: 30px;
+            background-color: #f9fbfb;
+            flex-grow: 1;
+        }
+
+
+        /* Flash Messages */
+        .flash-messages {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 25px;
+        }
+        .flash-messages li {
+            padding: 12px 20px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 0.95em;
+            display: flex;
+            align-items: center;
+        }
+        .flash-messages li i {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+        .flash-messages .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .flash-messages .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .flash-messages .warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+
+        /* Form Styles */
+        form {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            max-width: 700px; /* Constrain form width */
+            margin: 0 auto; /* Center the form */
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #34495e;
+            font-weight: bold;
+            font-size: 1.05em;
+        }
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #dcdcdc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 1em;
+            color: #333;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .form-control:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25); /* Focus shadow */
+        }
+        textarea.form-control {
+            resize: vertical;
+            min-height: 100px;
+        }
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.875em;
+            margin-top: 5px;
+            display: block;
+            font-weight: 500;
+        }
+
+        /* Button Styles */
+        .btn {
+            display: inline-block;
+            font-weight: 600;
+            color: #fff;
+            text-align: center;
+            vertical-align: middle;
+            user-select: none;
+            padding: 10px 25px;
+            font-size: 1.1em;
+            line-height: 1.5;
+            border-radius: 7px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none; /* Remove default border */
+        }
+        .btn-primary {
+            background-color: #3498db; /* Blue */
+        }
+        .btn-primary:hover {
+            background-color: #2980b9; /* Darker blue on hover */
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+        }
+        .btn-bateen { /* Example style for "Bateen Send Request" if it's a distinct button */
+            background-color: #2ecc71; /* Green */
+            margin-left: 15px;
+        }
+        .btn-bateen:hover {
+            background-color: #27ae60; /* Darker green on hover */
+            box-shadow: 0 4px 8px rgba(46, 204, 113, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Header Bar - Replaces the old sidebar and original header -->
+    <div class="header">
+        <div class="branding">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="AgriConnect Logo" class="logo-img">
+            <h2 class="app-title">AgriConnect</h2>
+        </div>
+        <!-- Navigation Links within the Header -->
+        <div class="header-nav">
+            <a href="{{ url_for('worker_dashboard') }}"><i class="fas fa-home"></i> Dashboard</a>
+            <a href="{{ url_for('worker_dashboard') }}"><i class="fas fa-briefcase"></i> Available Jobs</a>
+            <a href="{{ url_for('worker_dashboard') }}"><i class="fas fa-clipboard-list"></i> My Applications</a>
+            <a href="{{ url_for('worker_dashboard') }}"><i class="fas fa-tractor"></i> My Jobs (as Worker)</a>
+            <a href="{{ url_for('worker_dashboard') }}"><i class="fas fa-user-circle"></i> Profile</a>
+            <a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+        <div class="user-info">
+            <span>Welcome, {{ current_user.username }}</span>
+            <!-- Profile pic could go here if desired -->
+        </div>
+    </div>
+
+    <!-- Main Content Panel - Now directly below the new header -->
+    <div class="main-panel">
+        <div class="main-content">
+            <h3 style="color: #34495e; font-size: 1.8em; margin-bottom: 25px; text-align: center;">Request New Job</h3>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <ul class="flash-messages">
+                        {% for category, message in messages %}
+                            <li class="{{ category }}">
+                                {% if category == 'success' %}<i class="fas fa-check-circle"></i>
+                                {% elif category == 'error' %}<i class="fas fa-times-circle"></i>
+                                {% elif category == 'warning' %}<i class="fas fa-exclamation-triangle"></i>
+                                {% endif %}
+                                {{ message }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+
+            <form method="POST" action="{{ url_for('request_job') }}">
+                {{ form.hidden_tag() }} <!-- Renders CSRF token -->
+
+                <div class="form-group">
+                    {{ form.title.label(class="form-label") }}
+                    {{ form.title(class="form-control", placeholder="e.g., Plowing Field, Harvesting Wheat") }}
+                    {% if form.title.errors %}
+                        {% for error in form.title.errors %}
+                            <span class="error-message">{{ error }}</span>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.description.label(class="form-label") }}
+                    {{ form.description(class="form-control", rows="5", placeholder="Provide a detailed description of the job requirements and expectations.") }}
+                    {% if form.description.errors %}
+                        {% for error in form.description.errors %}
+                            <span class="error-message">{{ error }}</span>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.tool_id.label(class="form-label") }}
+                    {{ form.tool_id(class="form-control") }}
+                    {% if form.tool_id.errors %}
+                        {% for error in form.tool_id.errors %}
+                            <span class="error-message">{{ error }}</span>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.submit(class="btn btn-primary") }}
+                    <!--
+                        If "bateen send to request" is a separate button with a different action,
+                        you would uncomment and use this, potentially linking it to a different
+                        Flask route or handling it with JavaScript.
+                    -->
+                    <!-- <button type="submit" name="bateen_action" value="true" class="btn btn-bateen">Bateen Send Request</button> -->
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

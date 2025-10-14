@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Add Tool{% endblock %}
+{% block content %}
+    <h2>Add New Tool</h2>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.name.label }}
+            {{ form.name() }}
+            {% if form.name.errors %}
+                {% for error in form.name.errors %}
+                    <span style="color: red;">{{ error }}</span><br>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div>
+            {{ form.description.label }}
+            {{ form.description() }}
+            {% if form.description.errors %}
+                {% for error in form.description.errors %}
+                    <span style="color: red;">{{ error }}</span><br>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div>
+            {{ form.submit(class="btn btn-success") }}
+            <a href="{{ url_for('owner_dashboard') }}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+{% endblock %}
