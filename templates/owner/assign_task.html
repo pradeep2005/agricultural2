@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Assign Task{% endblock %}
+{% block content %}
+    <h2>Assign New Task</h2>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.title.label }}
+            {{ form.title() }}
+            {% if form.title.errors %}
+                {% for error in form.title.errors %}
+                    <span style="color: red;">{{ error }}</span><br>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div>
+            {{ form.description.label }}
+            {{ form.description() }}
+            {% if form.description.errors %}
+                {% for error in form.description.errors %}
+                    <span style="color: red;">{{ error }}</span><br>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div>
+            {{ form.priority.label }}
+            {{ form.priority() }}
+            {% if form.priority.errors %}
+                {% for error in form.priority.errors %}
+                    <span style="color: red;">{{ error }}</span><br>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div>
+            {{ form.worker_id.label }}
+            {{ form.worker_id() }}
+            {% if form.worker_id.errors %}
+                {% for error in form.worker_id.errors %}
+                    <span style="color: red;">{{ error }}</span><br>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div>
+            {{ form.tool_id.label }}
+            {{ form.tool_id() }}
+            {% if form.tool_id.errors %}
+                {% for error in form.tool_id.errors %}
+                    <span style="color: red;">{{ error }}</span><br>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div>
+            {{ form.submit(class="btn btn-primary") }}
+            <a href="{{ url_for('owner_dashboard') }}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+{% endblock %}

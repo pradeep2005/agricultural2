@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}Worker Dashboard{% endblock %}
+{% block content %}
+    <h2>Worker Dashboard - {{ current_user.username }}</h2>
+
+    <div class="dashboard-stats">
+        <div class="stat-card">
+            <h3>Total Tasks</h3>
+            <p>{{ total_tasks }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Pending Tasks</h3>
+            <p>{{ pending_tasks }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>In-Progress Tasks</h3>
+            <p>{{ in_progress_tasks }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Completed Tasks</h3>
+            <p>{{ completed_tasks }}</p>
+        </div>
+    </div>
+
+    <h3>Your Assigned Tasks</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Tool</th>
+                <th>Assigned Date</th>
+                <th>Completed Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in assigned_tasks %}
+            <tr>
+                <td>{{ task.id }}</td>
+                <td>{{ task.title }}</td>
+                <td>{{ task.description }}</td>
+                <td>{{ task.priority }}</td>
+                <td>{{ task.status }}</td>
+                <td>{{ task.tool.name if task.tool else 'N/A' }}</td>
+                <td>{{ task.assigned_date.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td>{{ task.completed_date.strftime('%Y-%m-%d %H:%M') if task.completed_date else 'N/A' }}</td>
+                <td>
+                    {% set form = task_forms[task.id] %}
+                    <form action="{{ url_for('update_task', task_id=task.id) }}" method="POST" style="display:inline;">
+                        {{ form.hidden_tag() }}
+                        {{ form.status(onchange="this.form.submit()") }}
+                        {% if form.status.errors %}
+                            {% for error in form.status.errors %}
+                                <span style="color: red;">{{ error }}</span><br>
+                            {% endfor %}
+                        {% endif %}
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Available Tools <a href="{{ url_for('report_issue') }}" class="btn btn-danger">Report Tool Issue</a></h3>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Last Maintenance</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tool in available_tools %}
+            <tr>
+                <td>{{ tool.id }}</td>
+                <td>{{ tool.name }}</td>
+                <td>{{ tool.description }}</td>
+                <td>{{ tool.status }}</td>
+                <td>{{ tool.last_maintenance.strftime('%Y-%m-%d') if tool.last_maintenance else 'N/A' }}</td>
+            </tr>
+            {% endfor %} {# <--- THIS WAS LIKELY MISSING #}
+        </tbody>
+    </table> {# <--- THIS WAS LIKELY MISSING #}
+{% endblock %}

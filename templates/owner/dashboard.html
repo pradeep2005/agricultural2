@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+{% block title %}Owner Dashboard{% endblock %}
+{% block content %}
+
+    <h2>Owner Dashboard</h2>
+
+    <div class="dashboard-stats">
+        <div class="stat-card">
+            <h3>Total Tools</h3>
+            <p>{{ total_tools }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Available Tools</h3>
+            <p>{{ available_tools }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>In-Use Tools</h3>
+            <p>{{ in_use_tools }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Tools in Maint.</h3>
+            <p>{{ maintenance_tools }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Total Tasks</h3>
+            <p>{{ total_tasks }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Pending Tasks</h3>
+            <p>{{ pending_tasks }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>In-Progress Tasks</h3>
+            <p>{{ in_progress_tasks }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Completed Tasks</h3>
+            <p>{{ completed_tasks }}</p>
+        </div>
+    </div>
+    
+     {# NEW SECTION FOR JOB REQUESTS #}
+    <h3>Pending Job Requests</h3>
+    {% if job_requests %}
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Requested By</th>
+                <th>Relevant Tool</th>
+                <th>Requested Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for req in job_requests %}
+            <tr>
+                <td>{{ req.id }}</td>
+                <td>{{ req.title }}</td>
+                <td>{{ req.description }}</td>
+                <td>{{ req.requester.username }}</td>
+                <td>{{ req.requested_tool.name if req.requested_tool else 'N/A' }}</td>
+                <td>{{ req.requested_date.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td>{{ req.status }}</td>
+                <td>
+                    {% set form = job_request_forms[req.id] %}
+                    <form action="{{ url_for('process_job_request', request_id=req.id) }}" method="POST">
+                        {{ form.hidden_tag() }}
+                        {{ form.action(class="form-control mb-1") }}
+                        {{ form.new_task_priority(class="form-control mb-1") }}
+                        {{ form.submit(class="btn btn-sm btn-primary mt-1") }}
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p>No pending job requests.</p>
+    {% endif %}
+
+
+    <h3>Tools Inventory <a href="{{ url_for('add_tool') }}" class="btn btn-success">Add New Tool</a></h3>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Last Maintenance</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tool in tools %}
+            <tr>
+                <td>{{ tool.id }}</td>
+                <td>{{ tool.name }}</td>
+                <td>{{ tool.description }}</td>
+                <td>{{ tool.status }}</td>
+                <td>{{ tool.last_maintenance.strftime('%Y-%m-%d') if tool.last_maintenance else 'N/A' }}</td>
+                <td>
+                    <a href="{{ url_for('edit_tool', tool_id=tool.id) }}" class="btn btn-info">Edit</a>
+                    <form action="{{ url_for('delete_tool', tool_id=tool.id) }}" method="POST" style="display:inline;">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this tool?');">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Assigned Tasks <a href="{{ url_for('assign_task') }}" class="btn btn-primary">Assign New Task</a></h3>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Assigned To</th>
+                <th>Tool</th>
+                <th>Assigned Date</th>
+                <th>Completed Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr>
+                <td>{{ task.id }}</td>
+                <td>{{ task.title }}</td>
+                <td>{{ task.description }}</td>
+                <td>{{ task.priority }}</td>
+                <td>{{ task.status }}</td>
+                <td>{{ task.assignee.username }}</td>
+                <td>{{ task.tool.name if task.tool else 'N/A' }}</td>
+                <td>{{ task.assigned_date.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td>{{ task.completed_date.strftime('%Y-%m-%d %H:%M') if task.completed_date else 'N/A' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Reported Tool Issues</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Tool</th>
+                <th>Reported By</th>
+                <th>Reported Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for issue in issues %}
+            <tr>
+                <td>{{ issue.id }}</td>
+                <td>{{ issue.title }}</td>
+                <td>{{ issue.description }}</td>
+                <td>{{ issue.tool_affected.name }}</td>
+                <td>{{ issue.reporter.username }}</td>
+                <td>{{ issue.reported_date.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td>{{ issue.status }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+{% endblock %}
