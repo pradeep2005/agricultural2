@@ -1,25 +1,38 @@
 {% extends "base.html" %}
 {% block title %}Report Issue{% endblock %}
+
 {% block content %}
     <h2>Report a Tool Issue</h2>
-    <form method="POST">
-        <div>
+    
+    <form method="POST" action="{{ url_for('report_issue') }}">
+        {{ form.hidden_tag() }}  {# Optional if using Flask-WTF #}
+
+        <div class="form-group">
             <label for="tool_id">Select Tool:</label>
-            <select id="tool_id" name="tool_id" required>
-                {% for tool in tools %}
-                <option value="{{ tool.id }}">{{ tool.name }} ({{ tool.status }})</option>
-                {% endfor %}
+            <select id="tool_id" name="tool_id" class="form-control" required>
+                {% if tools %}
+                    {% for tool in tools %}
+                        <option value="{{ tool.id }}">{{ tool.name }} ({{ tool.status }})</option>
+                    {% endfor %}
+                {% else %}
+                    <option disabled>No tools available</option>
+                {% endif %}
             </select>
         </div>
-        <div>
+
+        <div class="form-group mt-3">
             <label for="title">Issue Title:</label>
-            <input type="text" id="title" name="title" required>
+            <input type="text" id="title" name="title" class="form-control" required>
         </div>
-        <div>
+
+        <div class="form-group mt-3">
             <label for="description">Detailed Description of Issue:</label>
-            <textarea id="description" name="description" rows="6" required></textarea>
+            <textarea id="description" name="description" class="form-control" rows="6" required></textarea>
         </div>
-        <button type="submit" class="btn btn-danger">Report Issue</button>
-        <a href="{{ url_for('worker_dashboard') }}" class="btn btn-secondary">Cancel</a>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-danger">Report Issue</button>
+            <a href="{{ url_for('worker_dashboard') }}" class="btn btn-secondary">Cancel</a>
+        </div>
     </form>
 {% endblock %}

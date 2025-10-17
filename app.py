@@ -285,20 +285,44 @@ def update_task(task_id):
 @worker_required
 def report_issue():
     form = ReportIssueForm()
+
+    # ✅ Get tools assigned to the current worker (from their active tasks)
+    assigned_tool_ids = (
+        db.session.query(Task.tool_id)
+        .filter(Task.worker_id == current_user.id, Task.tool_id.isnot(None))
+        .distinct()
+        .all()
+    )
+    # Flatten list of tuples into a list of IDs
+    assigned_tool_ids = [tid[0] for tid in assigned_tool_ids]
+
+    # Fetch only those tools
+    tools = Tool.query.filter(Tool.id.in_(assigned_tool_ids)).all() if assigned_tool_ids else []
+
     if form.validate_on_submit():
         title = form.title.data
         description = form.description.data
         tool_id = form.tool_id.data
 
-        new_issue = ToolIssue(title=title, description=description, reporter_id=current_user.id, tool_id=tool_id)
+        new_issue = ToolIssue(
+            title=title,
+            description=description,
+            reporter_id=current_user.id,
+            tool_id=tool_id
+        )
+
+        # Optionally mark tool as under maintenance
         tool = Tool.query.get(tool_id)
         if tool and tool.status != 'Maintenance':
             tool.status = 'Maintenance'
+
         db.session.add(new_issue)
         db.session.commit()
         flash('Tool issue reported successfully!', 'success')
         return redirect(url_for('worker_dashboard'))
-    return render_template('worker/report_issue.html', form=form)
+
+    return render_template('worker/report_issue.html', form=form, tools=tools)
+
 
 # NEW ROUTE: Worker can request a job
 @app.route('/worker/request_job', methods=['GET', 'POST'])
