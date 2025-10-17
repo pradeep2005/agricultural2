@@ -1,0 +1,6 @@
+.venv/
+__pycache__
+__pycache__/config.cpython-312.pyc
+__pycache__/decorators.cpython-312.pyc
+__pycache__/forms.cpython-312.pyc
+__pycache__/models.cpython-312.pyc
